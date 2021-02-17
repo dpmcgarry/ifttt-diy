@@ -17,7 +17,6 @@ export class LambdaStack extends Stack {
       billingMode: ddb.BillingMode.PAY_PER_REQUEST,
       encryption: ddb.TableEncryption.AWS_MANAGED,
       pointInTimeRecovery: true,
-      removalPolicy: RemovalPolicy.SNAPSHOT,
       tableName: 'ifttt-diy-rssfeeds'
     });
 
