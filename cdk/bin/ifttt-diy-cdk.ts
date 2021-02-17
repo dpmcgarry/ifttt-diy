@@ -11,5 +11,6 @@ new PipelineStack(app, 'IFFT-DIY-PipelineStack',{
     lambdaCode: lambdaStack.lambdaCode,
     githubSecretName: 'dpmcgarry-github-oauth',
     githubOwner: 'dpmcgarry',
-    githubRepoName: 'ifttt-diy'
+    githubRepoName: 'ifttt-diy',
+    githubBranchName: 'main'
 });

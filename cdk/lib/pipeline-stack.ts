@@ -9,6 +9,7 @@ export interface PipelineStackProps extends cdk.StackProps {
   readonly githubSecretName: string;
   readonly githubOwner: string;
   readonly githubRepoName: string;
+  readonly githubBranchName: string;
 }
 
 export class PipelineStack extends cdk.Stack {
@@ -67,7 +68,7 @@ export class PipelineStack extends cdk.Stack {
         artifacts: {
           'base-directory': 'lambda',
           files: [
-            '/**/*',
+            '**/*',
           ],
         },
       }),
@@ -92,7 +93,9 @@ export class PipelineStack extends cdk.Stack {
               oauthToken: oauth,
               owner: props.githubOwner,
               repo: props.githubRepoName,
+              branch: props.githubBranchName,
               output: sourceOutput,
+              trigger: codepipeline_actions.GitHubTrigger.WEBHOOK
             }),
           ],
         },
@@ -118,7 +121,7 @@ export class PipelineStack extends cdk.Stack {
           actions: [
             new codepipeline_actions.CloudFormationCreateUpdateStackAction({
               actionName: 'Lambda_CFN_Deploy',
-              templatePath: cdkBuildOutput.atPath('LambdaStack.template.json'),
+              templatePath: cdkBuildOutput.atPath('IFTTT-DIY-LambdaStack.template.json'),
               stackName: 'LambdaDeploymentStack',
               adminPermissions: true,
               parameterOverrides: {
