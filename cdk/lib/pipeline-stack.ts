@@ -21,10 +21,11 @@ export class PipelineStack extends cdk.Stack {
         version: '0.2',
         phases: {
           install: {
-            runtime_versions:{
-              nodejs: 14
+            'runtime-versions':{
+              nodejs: 12
             },
             commands: [
+              'npm install -g aws-cdk',
               'cd cdk',
               'npm install',
             ]
@@ -44,7 +45,7 @@ export class PipelineStack extends cdk.Stack {
         },
       }),
       environment: {
-        buildImage: codebuild.LinuxBuildImage.STANDARD_2_0,
+        buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
       },
     });
 
@@ -53,7 +54,7 @@ export class PipelineStack extends cdk.Stack {
         version: '0.2',
         phases: {
           install: {
-            runtime_versions: {
+            'runtime-versions': {
               python: 3.8
             },
             commands: [
@@ -73,7 +74,7 @@ export class PipelineStack extends cdk.Stack {
         },
       }),
       environment: {
-        buildImage: codebuild.LinuxBuildImage.STANDARD_2_0,
+        buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
       },
     });
 
