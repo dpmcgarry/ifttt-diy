@@ -36,7 +36,8 @@ export class LambdaStack extends cdk.Stack {
         LOGGING_LEVEL: 'INFO',
         TABLE_NAME: props.rssDDBTableName
       },
-      timeout: Duration.minutes(5)
+      timeout: Duration.minutes(5),
+      memorySize: 256
     });
 
 
