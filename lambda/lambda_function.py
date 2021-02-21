@@ -6,6 +6,7 @@ import sys
 
 import boto3
 import feedparser
+import jsonpickle
 
 logger = logging.getLogger()
 log_level = os.environ.get("LOGGING_LEVEL", "DEBUG").upper()
@@ -14,9 +15,9 @@ logger.setLevel(log_level)
 def handler(event, context):
     logging.info("Lambda handler entrypoint")
     logging.info("Logging level: " + log_level)    
-    
-    logging.debug("Event: " + json.dumps(event))
-    logging.debug("Ctx: " + json.dumps(context))
+    logging.debug("Env Vars: " + jsonpickle.encode(dict(**os.environ)))
+    logging.debug("Event: " + jsonpickle.encode(event))
+    logging.debug("Ctx: " + jsonpickle.encode(context))
     ddb = boto3.client("dynamodb")
     resp = ddb.scan(TableName="ifttt-diy-rssfeeds")
     logging.debug('DDB RESP')
