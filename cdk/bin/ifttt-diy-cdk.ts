@@ -10,6 +10,7 @@ const app = new cdk.App();
 const lambdaStack = new LambdaStack(app, 'IFTTT-DIY-LambdaStack',{
     rssDDBTableName: IFTTTDIYSettings.rssDDBTableName
 });
+
 new PipelineStack(app, 'IFFT-DIY-PipelineStack',{
     lambdaCode: lambdaStack.lambdaCode,
     githubSecretName: IFTTTDIYSettings.githubSecretName,
