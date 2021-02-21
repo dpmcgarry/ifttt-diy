@@ -8,3 +8,5 @@ node_modules
 cdk.out
 
 .vscode/
+urls.txt
+ifttt-diy-settings.ts

@@ -1,3 +1,4 @@
+import * as cdk from '@aws-cdk/core';
 import * as codedeploy from '@aws-cdk/aws-codedeploy';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as ddb from '@aws-cdk/aws-dynamodb';
@@ -5,12 +6,14 @@ import * as events from '@aws-cdk/aws-events';
 import * as iam from '@aws-cdk/aws-iam';
 import * as targets from '@aws-cdk/aws-events-targets';
 
-import { App, RemovalPolicy, Stack, StackProps } from '@aws-cdk/core';
+export interface LambdaStackProps extends cdk.StackProps {
+  readonly rssDDBTableName: string;
+}
       
-export class LambdaStack extends Stack {
+export class LambdaStack extends cdk.Stack {
   public readonly lambdaCode: lambda.CfnParametersCode;
       
-  constructor(app: App, id: string, props?: StackProps) {
+  constructor(app: cdk.App, id: string, props: LambdaStackProps) {
     super(app, id, props);
 
     const ddbtable = new ddb.Table(this, 'ifttt-diy-rsstable', {
@@ -18,7 +21,7 @@ export class LambdaStack extends Stack {
       billingMode: ddb.BillingMode.PAY_PER_REQUEST,
       encryption: ddb.TableEncryption.AWS_MANAGED,
       pointInTimeRecovery: true,
-      tableName: 'ifttt-diy-rssfeeds'
+      tableName: props.rssDDBTableName
     });
 
     this.lambdaCode = lambda.Code.fromCfnParameters();
@@ -28,6 +31,7 @@ export class LambdaStack extends Stack {
       handler: 'lambda_function.handler',
       runtime: lambda.Runtime.PYTHON_3_8,
       description: `Function generated on: ${new Date().toISOString()}`,
+      environment: { LOGGING_LEVEL: 'INFO'}
     });
 
 
