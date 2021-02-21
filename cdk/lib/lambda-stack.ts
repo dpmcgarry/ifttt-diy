@@ -5,6 +5,7 @@ import * as ddb from '@aws-cdk/aws-dynamodb';
 import * as events from '@aws-cdk/aws-events';
 import * as iam from '@aws-cdk/aws-iam';
 import * as targets from '@aws-cdk/aws-events-targets';
+import { Duration } from '@aws-cdk/core';
 
 export interface LambdaStackProps extends cdk.StackProps {
   readonly rssDDBTableName: string;
@@ -31,7 +32,11 @@ export class LambdaStack extends cdk.Stack {
       handler: 'lambda_function.handler',
       runtime: lambda.Runtime.PYTHON_3_8,
       description: `Function generated on: ${new Date().toISOString()}`,
-      environment: { LOGGING_LEVEL: 'INFO'}
+      environment: { 
+        LOGGING_LEVEL: 'INFO',
+        TABLE_NAME: props.rssDDBTableName
+      },
+      timeout: Duration.minutes(5)
     });
 
 

@@ -18,8 +18,13 @@ def handler(event, context):
     logging.debug("Env Vars: " + jsonpickle.encode(dict(**os.environ)))
     logging.debug("Event: " + jsonpickle.encode(event))
     logging.debug("Ctx: " + jsonpickle.encode(context))
+    table_name = os.environ.get("TABLE_NAME")
+    if not table_name:
+        table_name = "ifttt-diy-rssfeeds"
+        logging.warning("Table Name env var not found; using default")
+    logging.info("Using DDB Table Name: " + table_name)
     ddb = boto3.client("dynamodb")
-    resp = ddb.scan(TableName="ifttt-diy-rssfeeds")
+    resp = ddb.scan(TableName=table_name)
     logging.debug('DDB RESP')
     logging.debug(json.dumps(resp))
 
